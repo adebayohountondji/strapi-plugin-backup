@@ -1,6 +1,6 @@
 {
   "name": "strapi-plugin-backup",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Strapi backup plugin for the cloud.",
   "keywords": [
     "strapi-plugin",

@@ -81,6 +81,25 @@ module.exports = ({ env }) => ({
 
 ## Database
 
+### databaseDriver
+
+- Required
+- String (`sqlite` or `postgres` or `mysql`)
+- Default : environment variable `DATABASE_CLIENT`
+
+```js
+// ./config/plugins.js
+
+module.exports = ({ env }) => ({
+  backup: {
+    enabled: true,
+    config: {
+      databaseDriver: env('DATABASE_CLIENT'),
+    }
+  }
+});
+```
+
 ### mysqldumpExecutable
 
 - Required if your strapi database client is `mysql`
