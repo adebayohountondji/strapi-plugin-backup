@@ -1,6 +1,6 @@
 {
   "name": "strapi-plugin-backup",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-rc.1",
   "description": "Strapi backup plugin for the cloud.",
   "keywords": [
     "strapi-plugin",
@@ -55,7 +55,7 @@
     "test": "jest"
   },
   "engines": {
-    "node": ">=12.x.x <=18.x.x",
+    "node": ">=14.19.1 <=18.x.x",
     "npm": ">=6.0.0"
   }
 }
