@@ -35,6 +35,7 @@ module.exports = ({ env }) => {
         awsSecretAccessKey: '<AWS_SECRET_ACCESS_KEY>',
         awsRegion: '<AWS_REGION>',
         awsS3Bucket: '<AWS_S3_BUCKET>',
+        databaseDriver: env('DATABASE_CLIENT'),
         mysqldumpExecutable: '/path/to/your/mysqldump/bin',
         mysqldumpOptions: [
             '--add-drop-table',
