@@ -1,6 +1,6 @@
 {
   "name": "strapi-plugin-backup",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Strapi backup plugin for the cloud.",
   "keywords": [
     "strapi-plugin",
@@ -13,7 +13,7 @@
     "postgres",
     "sqlite"
   ],
-  "homepage": "https://github.com/adebayohountondji/strapi-plugin-backup",
+  "homepage": "https://market.strapi.io/plugins/strapi-plugin-backup",
   "bugs": {
     "url": "https://github.com/adebayohountondji/strapi-plugin-backup/issues"
   },
@@ -34,6 +34,7 @@
   ],
   "strapi": {
     "name": "backup",
+    "icon": "logo.jpeg",
     "displayName": "Backup",
     "description": "Automation of database backups and uploads.",
     "kind": "plugin"
