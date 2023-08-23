@@ -2,11 +2,11 @@
 
 const {
   StrapiDatabaseDriver
-} = require('../../lib/db-dump');
+} = require("../../lib/db-dump");
 
 const {
   StorageService
-} = require('../../lib/storage');
+} = require("../../lib/storage");
 
 const throwConfigInvalidValueError = (configKey, invalidValue) => {
   throw new Error(
@@ -20,6 +20,9 @@ const requiredConfigKeys = [
   'awsRegion',
   'awsS3Endpoint',
   'awsS3Bucket',
+  'azureStorageAccountKey',
+  'azureStorageAccountName',
+  'azureStorageContainerName',
   'cronSchedule',
   'databaseDriver',
   'gcsBucketName',
@@ -31,9 +34,13 @@ const requiredConfigKeys = [
   'timeToKeepBackupsInSeconds'
 ];
 
+const configStorageServiceIsAwsS3 = config => config.storageService === StorageService.AWS_S3;
+const configStorageServiceIsAzureBlobStorage = config => config.storageService === StorageService.AZURE_BLOB_STORAGE;
+const configStorageServiceIsGCS = config => config.storageService === StorageService.GCS;
+
 const customValidatorByRequiredConfigKey = {
   awsAccessKeyId: (config) => {
-    if (config.storageService !== StorageService.AWS_S3)
+    if (!configStorageServiceIsAwsS3(config))
       return;
 
     if (typeof config.awsAccessKeyId !== 'string') {
@@ -41,7 +48,7 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   awsSecretAccessKey: (config) => {
-    if (config.storageService !== StorageService.AWS_S3)
+    if (!configStorageServiceIsAwsS3(config))
       return;
 
     if (typeof config.awsSecretAccessKey !== 'string') {
@@ -49,7 +56,7 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   awsRegion: (config) => {
-    if (config.storageService !== StorageService.AWS_S3)
+    if (!configStorageServiceIsAwsS3(config))
       return;
 
     if (config.awsS3Endpoint !== undefined)
@@ -60,7 +67,7 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   awsS3Endpoint: (config) => {
-    if (config.storageService !== StorageService.AWS_S3)
+    if (!configStorageServiceIsAwsS3(config))
       return;
 
     if (config.awsRegion !== undefined)
@@ -71,11 +78,35 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   awsS3Bucket: (config) => {
-    if (config.storageService !== StorageService.AWS_S3)
+    if (!configStorageServiceIsAwsS3(config))
       return;
 
     if (typeof config.awsS3Bucket !== 'string') {
       throwConfigInvalidValueError('awsS3Bucket', config.awsS3Bucket);
+    }
+  },
+  azureStorageAccountKey: (config) => {
+    if (!configStorageServiceIsAzureBlobStorage(config))
+      return;
+
+    if (typeof config.azureStorageAccountKey !== 'string') {
+      throwConfigInvalidValueError('azureStorageAccountKey', config.azureStorageAccountKey);
+    }
+  },
+  azureStorageAccountName: (config) => {
+    if (!configStorageServiceIsAzureBlobStorage(config))
+      return;
+
+    if (typeof config.azureStorageAccountName !== 'string') {
+      throwConfigInvalidValueError('azureStorageAccountName', config.azureStorageAccountName);
+    }
+  },
+  azureStorageContainerName: (config) => {
+    if (!configStorageServiceIsAzureBlobStorage(config))
+      return;
+
+    if (typeof config.azureStorageContainerName !== 'string') {
+      throwConfigInvalidValueError('azureStorageContainerName', config.azureStorageContainerName);
     }
   },
   databaseDriver: (config) => {
@@ -84,7 +115,7 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   gcsBucketName: (config) => {
-    if (config.storageService !== StorageService.GCS)
+    if (!configStorageServiceIsGCS(config))
       return;
 
     if (typeof config.gcsBucketName !== 'string') {
@@ -92,7 +123,7 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   gcsKeyFilename: (config) => {
-    if (config.storageService !== StorageService.GCS)
+    if (!configStorageServiceIsGCS(config))
       return;
 
     if (typeof config.gcsKeyFilename !== 'string') {

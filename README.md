@@ -1,6 +1,6 @@
 # Strapi Plugin Backup
 
-Strapi backup plugin for the cloud.
+Automate the backup of uploads and database to the cloud.
 
 ## Features
 

@@ -1,24 +1,24 @@
 'use strict';
 
-const fs = require('fs');
+const fs = require("fs");
 
 const {
   createDatabaseDumperFromConfig
-} = require('../../../lib/db-dump');
+} = require("../../../lib/db-dump");
 
 const {
   createStorageServiceFromConfig
-} = require('../../../lib/storage');
+} = require("../../../lib/storage");
 
 const {
   createArchive,
   createTmpFilename,
   dateDiffInSeconds
-} = require('../../../lib/utils');
+} = require("../../../lib/utils");
 
 const {
   createBackupDatabaseConnectionConfigFromStrapi
-} = require('./utils');
+} = require("./utils");
 
 module.exports = ({ strapi }) => {
   const backupConfig = strapi.config.get('plugin.backup');

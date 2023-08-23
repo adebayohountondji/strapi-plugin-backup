@@ -42,6 +42,7 @@ Available options :
 * `aws-s3` for [AWS Simple Storage Service](https://aws.amazon.com/s3)
 
 You must have `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObjects` in your IAM permissions.
+
 `aws-s3` may work with S3 compatible services by using the `awsS3Endpoint` option instead of `awsRegion`.
 
 ```js
@@ -52,11 +53,29 @@ module.exports = ({ env }) => ({
     enabled: true,
     config: {
       storageService: 'aws-s3',
-      awsAccessKeyId: '<AWS_ACCESS_KEY_ID>',
-      awsSecretAccessKey: '<AWS_SECRET_ACCESS_KEY>',
-      awsRegion: '<AWS_REGION>', // Optional if awsS3Endpoint is defined
-      awsS3Endpoint: '<S3_ENDPOINT>', // Optional if awsRegion is defined (e.g. "s3.fr-par.scw.cloud")
-      awsS3Bucket: '<AWS_S3_BUCKET>'
+      awsAccessKeyId: 'YOUR_AWS_ACCESS_KEY_ID',
+      awsSecretAccessKey: 'YOUR_AWS_SECRET_ACCESS_KEY',
+      awsRegion: 'YOUR_AWS_REGION', // Optional if awsS3Endpoint is defined
+      awsS3Endpoint: 'YOUR_S3_ENDPOINT', // Optional if awsRegion is defined (e.g. "s3.fr-par.scw.cloud")
+      awsS3Bucket: 'YOUR_AWS_S3_BUCKET'
+    }
+  }
+});
+```
+
+* `azure-blob-storage` for [Azure Blob Storage](https://azure.microsoft.com/products/storage/blobs)
+
+```js
+// ./config/plugins.js
+
+module.exports = ({ env }) => ({
+  backup: {
+    enabled: true,
+    config: {
+      storageService: 'azure-blob-storage',
+      azureStorageAccountName: '<AZURE_STORAGE_ACCOUNT_NAME>',
+      azureStorageAccountKey: '<AZURE_STORAGE_ACCOUNT_KEY>',
+      azureStorageContainerName: '<AZURE_STORAGE_CONTAINER_NAME>',
     }
   }
 });
