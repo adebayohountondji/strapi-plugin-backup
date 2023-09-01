@@ -38,7 +38,7 @@
     "name": "backup",
     "icon": "logo.jpeg",
     "displayName": "Backup",
-    "description": "Automation of database backups and uploads.",
+    "description": "Automate the backup of uploads and database to the cloud.",
     "kind": "plugin"
   },
   "devDependencies": {

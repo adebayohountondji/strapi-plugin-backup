@@ -4,17 +4,17 @@ const fs = require("fs");
 
 const {
   createDatabaseDumperFromConfig
-} = require("../../../lib/db-dump");
+} = require("../../../internal/db-dump");
 
 const {
   createStorageServiceFromConfig
-} = require("../../../lib/storage");
+} = require("../../../internal/storage");
 
 const {
   createArchive,
   createTmpFilename,
   dateDiffInSeconds
-} = require("../../../lib/utils");
+} = require("../../../internal/utils");
 
 const {
   createBackupDatabaseConnectionConfigFromStrapi

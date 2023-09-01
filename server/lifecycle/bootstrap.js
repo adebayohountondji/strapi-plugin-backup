@@ -4,7 +4,7 @@ const cron = require('../configuration/cron');
 
 const {
   tmpDir
-} = require('../../lib/utils');
+} = require('../../internal/utils');
 
 module.exports = async ({ strapi }) => {
   if (!fs.existsSync(tmpDir())) {

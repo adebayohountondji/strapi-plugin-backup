@@ -2,7 +2,7 @@ const {
   parseMysqlConnectionString,
   parsePostgresConnectionString,
   StrapiDatabaseDriver
-} = require('../../../lib/db-dump');
+} = require('../../../internal/db-dump');
 
 const createArchiveRootNameFromDate = (date) => {
   const _date = [

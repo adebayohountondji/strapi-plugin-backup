@@ -1,4 +1,4 @@
-const { dateDiffInSeconds } = require('../lib/utils');
+const { dateDiffInSeconds } = require('../internal/utils');
 
 test('dateDiffInSeconds', () => {
 
