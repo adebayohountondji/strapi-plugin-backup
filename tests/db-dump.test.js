@@ -37,10 +37,7 @@ test('CommandBuilder::build', () => {
       .addOption('--add-drop-table')
       .addOption('--add-drop-table') // Try to add --add-drop-table x2
       .addOptionWithValue('--user', 'root')
-      .addOptionWithValue('-p', 'root')
-      .setOptionsAlias({
-        '-p': '--password'
-      })
+      .addOptionWithValue('--password', 'root')
       .setArgs('strapi > database.sql')
       .build()
   )

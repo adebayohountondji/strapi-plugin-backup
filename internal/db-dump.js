@@ -1,6 +1,6 @@
 'use strict';
 
-const { exec } = require('child_process');
+const {exec} = require('child_process');
 
 const StrapiDatabaseDriver = {
   MYSQL: 'mysql',
@@ -21,15 +21,12 @@ class CommandBuilder {
   #valuePerOption;
   #args;
 
-  #alias;
-
   constructor(executable) {
     this.#envVars = {};
     this.#executable = executable;
     this.#options = [];
     this.#valuePerOption = {};
     this.#args = '';
-    this.#alias = {};
   }
 
   addOptionWithValue(optionName, optionValue) {
@@ -43,11 +40,6 @@ class CommandBuilder {
       this.#options.push(option);
     }
 
-    return this;
-  }
-
-  setOptionsAlias(alias) {
-    this.#alias = alias;
     return this;
   }
 
@@ -65,7 +57,7 @@ class CommandBuilder {
     let command = `${this.#executable} ${this.optionsToString()}`;
 
     if (this.#args) {
-      command+= ` ${this.#args}`;
+      command += ` ${this.#args}`;
     }
 
     if (Object.keys(this.#envVars).length) {
@@ -81,13 +73,11 @@ class CommandBuilder {
 
   optionsToString() {
     return this.#options.map((option) => {
-      const optionName = this.#alias[option] || option;
-
       if (option in this.#valuePerOption) {
-        return `${optionName}=${this.#valuePerOption[option]}`;
+        return `${option}=${this.#valuePerOption[option]}`;
       }
 
-      return optionName;
+      return option;
     })
       .join(' ')
   }
@@ -129,6 +119,17 @@ class MysqlDump extends RelationalDatabaseDumper {
   #connection;
   #options;
 
+  static #protectedOptions = [
+    '-u',
+    '--user',
+    '-p',
+    '--password',
+    '-h',
+    '--host',
+    '-P',
+    '--port'
+  ];
+
   constructor(
     executable,
     connection = {
@@ -152,6 +153,10 @@ class MysqlDump extends RelationalDatabaseDumper {
     this.#options.forEach(optionString => {
       let option = parseCommandOptionString(optionString);
 
+      if (MysqlDump.#protectedOptions.includes(option.name)) {
+        return;
+      }
+
       if (option.value) {
         commandBuilder.addOptionWithValue(option.name, option.value);
       } else {
@@ -164,12 +169,6 @@ class MysqlDump extends RelationalDatabaseDumper {
       .addOptionWithValue('--password', this.#connection.password)
       .addOptionWithValue('--host', this.#connection.host)
       .addOptionWithValue('--port', this.#connection.port)
-      .setOptionsAlias({
-        '-u': '--user',
-        '-p': '--password',
-        '-h': '--host',
-        '-P': '--port'
-      })
       .setArgs(`${this.#connection.database} > ${outputFilePath}`);
 
     return commandBuilder.build();
@@ -187,6 +186,21 @@ class PgDump extends RelationalDatabaseDumper {
   #connection;
   #options;
 
+  static #protectedOptions = [
+    '-U',
+    '--username',
+    '-W',
+    '--password',
+    '-h',
+    '--host',
+    '-p',
+    '--port',
+    '-d',
+    '--dbname',
+    '-f',
+    '--file',
+  ];
+
   constructor(
     executable,
     connection = {
@@ -210,6 +224,10 @@ class PgDump extends RelationalDatabaseDumper {
     this.#options.forEach(optionString => {
       let option = parseCommandOptionString(optionString);
 
+      if (PgDump.#protectedOptions.includes(option.name)) {
+        return;
+      }
+
       if (option.value) {
         commandBuilder.addOptionWithValue(option.name, option.value);
       } else {
@@ -223,15 +241,7 @@ class PgDump extends RelationalDatabaseDumper {
       .addOptionWithValue('--host', this.#connection.host)
       .addOptionWithValue('--port', this.#connection.port)
       .addOptionWithValue('--dbname', this.#connection.database)
-      .addOptionWithValue('--file', outputFilePath)
-      .setOptionsAlias({
-        '-U': '--username',
-        '-W': '--password',
-        '-h': '--host',
-        '-p': '--port',
-        '-d': '--dbname',
-        '-f': '--file',
-      });
+      .addOptionWithValue('--file', outputFilePath);
 
     return commandBuilder.build();
   }
