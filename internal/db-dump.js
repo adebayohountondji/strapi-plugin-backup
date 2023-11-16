@@ -62,7 +62,7 @@ class CommandBuilder {
 
     if (Object.keys(this.#envVars).length) {
       const envVarsString = Object.keys(this.#envVars)
-        .map(name => `${name}=${this.#envVars[name]}`)
+        .map(name => `${name}="${this.#envVars[name]}"`)
         .join(' ');
 
       command = `${envVarsString} ${command}`;
