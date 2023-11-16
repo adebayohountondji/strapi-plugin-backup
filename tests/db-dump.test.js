@@ -53,7 +53,7 @@ test('CommandBuilder::build', () => {
       .addOptionWithValue('--file', 'db.sql')
       .build()
   )
-    .toBe('PGPASSWORD=root /bin/pg_dump --username=root --host=127.0.0.1 --port=5432 --dbname=strapi --file=db.sql');
+    .toBe('PGPASSWORD="root" /bin/pg_dump --username=root --host=127.0.0.1 --port=5432 --dbname=strapi --file=db.sql');
 });
 
 test('parseMysqlConnectionString', () => {
