@@ -16,14 +16,16 @@ npm install strapi-plugin-backup
 
 ## Configuration
 
-Please see [documentation](documentation/configuration.md) for more information about configuration.
+Please
+see [documentation](https://github.com/adebayohountondji/strapi-plugin-backup/blob/1.x/documentation/configuration.md)
+for more information about configuration.
 
 ## Example
 
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => {
+module.exports = ({env}) => {
   return ({
     // ...
     backup: {
@@ -38,10 +40,10 @@ module.exports = ({ env }) => {
         databaseDriver: env('DATABASE_CLIENT'),
         mysqldumpExecutable: '/path/to/your/mysqldump/bin',
         mysqldumpOptions: [
-            '--add-drop-table',
-            '--extended-insert',
-            '--lock-tables',
-            '--dump-date'
+          '--add-drop-table',
+          '--extended-insert',
+          '--lock-tables',
+          '--dump-date'
         ],
         allowCleanup: true,
         timeToKeepBackupsInSeconds: 172800, // 2 days
@@ -55,11 +57,8 @@ module.exports = ({ env }) => {
 
 ## Releases
 
-This project follows the Semantic Versioning convention ([https://semver.org](https://semver.org)) for version numbering.
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+This project follows the Semantic Versioning convention ([https://semver.org](https://semver.org)) for version
+numbering.
 
 ## Security
 
@@ -67,4 +66,5 @@ If you discover any security-related issues, please email mail@adebayo.fr instea
 
 ## License
 
-Please see [License File](LICENSE) for more information.
+Please see [License File](https://github.com/adebayohountondji/strapi-plugin-backup/blob/1.x/LICENSE) for more
+information.

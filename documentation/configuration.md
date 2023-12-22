@@ -41,7 +41,7 @@ Available options :
 
 * `aws-s3` for [AWS Simple Storage Service](https://aws.amazon.com/s3)
 
-You must have `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObjects` in your IAM permissions.
+You must have `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObject` in your IAM permissions.
 
 `aws-s3` may work with S3 compatible services by using the `awsS3Endpoint` option instead of `awsRegion`.
 
