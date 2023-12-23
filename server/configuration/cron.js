@@ -4,19 +4,19 @@ const {
   createBackupFilenameFromPrefixAndDate
 } = require('../backend/services/utils');
 
-module.exports = ({ strapi }) => {
+module.exports = ({strapi}) => {
   const backupConfig = strapi.config.get('plugin.backup');
   const backupService = strapi.plugin('backup').service('backup');
   const backupLogService = strapi.plugin('backup').service('log');
 
   return {
     backup: {
-      task: ({ strapi }) => {
+      task: ({strapi}) => {
         const date = new Date();
 
         if (!backupConfig.disableUploadsBackup) {
           const backupFilename = typeof backupConfig.customUploadsBackupFilename === 'function'
-            ? backupConfig.customUploadsBackupFilename({ strapi })
+            ? backupConfig.customUploadsBackupFilename({strapi})
             : createBackupFilenameFromPrefixAndDate('uploads', date)
             ;
 
@@ -28,13 +28,14 @@ module.exports = ({ strapi }) => {
               backupLogService.info(`backup: ${backupFilename}`);
             })
             .catch(function (error) {
-              throw error;
+              backupLogService.error(`backup: ${backupFilename} failed`);
+              backupConfig.errorHandler(error, strapi);
             });
         }
 
         if (!backupConfig.disableDatabaseBackup) {
           const databaseBackupFilename = typeof backupConfig.customDatabaseBackupFilename === 'function'
-            ? backupConfig.customDatabaseBackupFilename({ strapi })
+            ? backupConfig.customDatabaseBackupFilename({strapi})
             : createBackupFilenameFromPrefixAndDate('database', date)
             ;
 
@@ -45,7 +46,8 @@ module.exports = ({ strapi }) => {
               backupLogService.info(`backup: ${databaseBackupFilename}`);
             })
             .catch(function (error) {
-              throw error;
+              backupLogService.error(`backup: ${databaseBackupFilename} failed`);
+              backupConfig.errorHandler(error, strapi);
             });
         }
       },
@@ -56,14 +58,15 @@ module.exports = ({ strapi }) => {
     },
 
     cleanup: {
-      task: ({ strapi }) => {
+      task: ({strapi}) => {
         if (backupConfig.allowCleanup) {
           backupService.cleanup()
             .then(() => {
               backupLogService.info('cleanup');
             })
             .catch(function (error) {
-              throw error;
+              backupLogService.error(`cleanup: failed`);
+              backupConfig.errorHandler(error, strapi);
             });
         }
       },

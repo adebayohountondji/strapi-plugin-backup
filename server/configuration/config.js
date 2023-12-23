@@ -173,7 +173,7 @@ const customValidatorByRequiredConfigKey = {
 }
 
 module.exports = {
-  default: ({ env }) => ({
+  default: ({env}) => ({
     disableUploadsBackup: false,
     disableDatabaseBackup: false,
     databaseDriver: env('DATABASE_CLIENT'),
@@ -183,7 +183,8 @@ module.exports = {
     timeToKeepBackupsInSeconds: undefined,
     cleanupCronSchedule: undefined,
     customDatabaseBackupFilename: undefined,
-    customUploadsBackupFilename: undefined
+    customUploadsBackupFilename: undefined,
+    errorHandler: (error, strapi) => {},
   }),
 
   validator: (config) => {

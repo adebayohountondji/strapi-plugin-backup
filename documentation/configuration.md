@@ -18,11 +18,34 @@ Run the backup on a custom cron schedule.
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
       cronSchedule: '0 * * * *', // Run backup each hour
+    }
+  }
+});
+```
+
+### errorHandler
+
+- Optional
+- Function
+- Default : `errorHandler: (error, strapi) => {}`
+
+Handling errors when a backup or cleanup operation fails.
+
+```js
+// ./config/plugins.js
+
+module.exports = ({env}) => ({
+  backup: {
+    enabled: true,
+    config: {
+      errorHandler: (error, strapi) => {
+        console.log(error);
+      }
     }
   }
 });
@@ -48,16 +71,16 @@ You must have `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObject` in your IAM per
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
       storageService: 'aws-s3',
-      awsAccessKeyId: 'YOUR_AWS_ACCESS_KEY_ID',
-      awsSecretAccessKey: 'YOUR_AWS_SECRET_ACCESS_KEY',
-      awsRegion: 'YOUR_AWS_REGION', // Optional if awsS3Endpoint is defined
-      awsS3Endpoint: 'YOUR_S3_ENDPOINT', // Optional if awsRegion is defined (e.g. "s3.fr-par.scw.cloud")
-      awsS3Bucket: 'YOUR_AWS_S3_BUCKET'
+      awsAccessKeyId: '<AWS_ACCESS_KEY_ID>',
+      awsSecretAccessKey: '<AWS_SECRET_ACCESS_KEY>',
+      awsRegion: '<AWS_REGION>', // Optional if awsS3Endpoint is defined
+      awsS3Endpoint: '<S3_ENDPOINT>', // Optional if awsRegion is defined (e.g. "s3.fr-par.scw.cloud")
+      awsS3Bucket: '<AWS_S3_BUCKET>'
     }
   }
 });
@@ -68,7 +91,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -88,7 +111,7 @@ You must have `storage.objects.create`, `storage.objects.list`, `storage.objects
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -111,7 +134,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -129,7 +152,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -149,7 +172,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -174,7 +197,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -194,7 +217,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -217,7 +240,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -237,7 +260,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -256,7 +279,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -276,7 +299,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -295,7 +318,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -316,7 +339,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -334,7 +357,7 @@ module.exports = ({ env }) => ({
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {
@@ -355,7 +378,7 @@ Run the cleanup on a custom cron schedule.
 ```js
 // ./config/plugins.js
 
-module.exports = ({ env }) => ({
+module.exports = ({env}) => ({
   backup: {
     enabled: true,
     config: {

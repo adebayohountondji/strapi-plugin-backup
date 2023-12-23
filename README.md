@@ -47,7 +47,10 @@ module.exports = ({env}) => {
         ],
         allowCleanup: true,
         timeToKeepBackupsInSeconds: 172800, // 2 days
-        cleanupCronSchedule: '0 9 * * *' // Each day at 09:00 AM
+        cleanupCronSchedule: '0 9 * * *', // Each day at 09:00 AM
+        errorHandler: (error, strapi) => {
+          console.log(error);
+        },
       }
     },
     // ...
