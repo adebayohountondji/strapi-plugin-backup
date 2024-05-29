@@ -234,7 +234,8 @@ module.exports = ({env}) => ({
 
 ### sqlite3Executable
 
-- Required your strapi database client is `sqlite`
+- Required if your strapi database client is `sqlite` and `better-sqlite3` node module is not available/wanted.
+  Using `better-sqlite3`removes the sqlite dependency on the machine and uses an already existing dependency of strapi but results in a bigger file size because of a binary database file beeing exported compared to the default text file of sql.
 - Array
 
 ```js

@@ -262,6 +262,40 @@ class Sqlite3Dumper extends RelationalDatabaseDumper {
   }
 }
 
+class BetterSqlite3Dumper extends DatabaseDumper {
+  #filename;
+
+  constructor(filename) {
+    super();
+    this.#filename = filename;
+  }
+
+  async dump(outputFilePath) {
+    try {
+      const Database = require("better-sqlite3");
+      const db = new Database(this.#filename);
+      
+      // Optimize database size
+      const stmt = db.prepare('VACUUM');
+      stmt.run();
+
+      //Create the backup
+      await db.backup(outputFilePath);
+      db.close();
+    } catch (error) {
+      if (error.code === "MODULE_NOT_FOUND") {
+        reject(new Error("better-sqlite3 module is not installed."));
+      } else {
+        reject(error);
+      }
+    }
+  }
+
+  getDumpCommandFromOutputFilePath() {
+    throw new Error("getDumpCommandFromOutputFilePath dump not implemented");
+  }
+}
+
 const createDatabaseDumperFromConfig = (
   {
     databaseDriver,
@@ -304,8 +338,12 @@ const createDatabaseDumperFromConfig = (
         pgDumpOptions
       );
     case StrapiDatabaseDriver.SQLITE:
-      return new Sqlite3Dumper(filename, sqlite3Executable);
-  }
+      if (sqlite3Executable) {
+        return new Sqlite3Dumper(filename, sqlite3Executable);
+      } else {
+        return new BetterSqlite3Dumper(filename);
+      }
+    }
 
   throw new Error(
     `“${databaseDriver}“ is not a valid strapi-plugin-backup config “databaseDriver“ value.`

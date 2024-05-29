@@ -14,6 +14,15 @@ const throwConfigInvalidValueError = (configKey, invalidValue) => {
   );
 }
 
+const isBetterSqlite3Available = () => {
+  try {
+    require.resolve('better-sqlite3');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const requiredConfigKeys = [
   'awsAccessKeyId',
   'awsSecretAccessKey',
@@ -152,7 +161,7 @@ const customValidatorByRequiredConfigKey = {
     if (config.disableDatabaseBackup || config.databaseDriver !== StrapiDatabaseDriver.SQLITE)
       return;
 
-    if (typeof config.sqlite3Executable !== 'string') {
+    if (typeof config.sqlite3Executable !== 'string' && !isBetterSqlite3Available) {
       // @todo check if path exists
       throwConfigInvalidValueError('sqlite3Executable', config.sqlite3Executable);
     }
