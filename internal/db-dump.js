@@ -5,7 +5,8 @@ const {exec} = require('child_process');
 const StrapiDatabaseDriver = {
   MYSQL: 'mysql',
   POSTGRES: 'postgres',
-  SQLITE: 'sqlite'
+  SQLITE: 'sqlite',
+  STRAPI_EXPORT: 'strapi-export'
 };
 
 const parseCommandOptionString = (optionString) => {
@@ -262,6 +263,43 @@ class Sqlite3Dumper extends RelationalDatabaseDumper {
   }
 }
 
+class StrapiExportDumper extends DatabaseDumper {
+  #exportOptions
+
+  constructor(exportOptions = {}) {
+    super();
+    this.#exportOptions = exportOptions;
+  }
+
+  buildCommand(outputFilePath) {
+    let command = `strapi export -f ${outputFilePath}`;
+
+    for (const [key, value] of Object.entries(this.#exportOptions)) {
+      if (typeof value === 'boolean') {
+        command += value ? ` --${key}` : '';
+      } else {
+        command += ` --${key} ${value}`;
+      }
+    }
+
+    return command;
+  }
+
+  dump(outputFilePath) {
+    return new Promise((resolve, reject) => {
+      const command = this.buildCommand(outputFilePath);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(stdout);
+      });
+    });
+  }
+
+}
+
 const createDatabaseDumperFromConfig = (
   {
     databaseDriver,
@@ -275,7 +313,8 @@ const createDatabaseDumperFromConfig = (
     mysqldumpOptions,
     pgDumpExecutable,
     pgDumpOptions,
-    sqlite3Executable
+    sqlite3Executable,
+    strapiExportOptions,
   }
 ) => {
   switch (databaseDriver) {
@@ -305,6 +344,8 @@ const createDatabaseDumperFromConfig = (
       );
     case StrapiDatabaseDriver.SQLITE:
       return new Sqlite3Dumper(filename, sqlite3Executable);
+    case StrapiDatabaseDriver.STRAPI_EXPORT:
+      return new StrapiExportDumper(strapiExportOptions);
   }
 
   throw new Error(
@@ -319,5 +360,5 @@ module.exports = {
   parseCommandOptionString,
   parseMysqlConnectionString,
   parsePostgresConnectionString,
-  StrapiDatabaseDriver
+  StrapiDatabaseDriver,
 };

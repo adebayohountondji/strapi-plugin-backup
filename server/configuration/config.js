@@ -112,6 +112,15 @@ const customValidatorByRequiredConfigKey = {
   databaseDriver: (config) => {
     if (!Object.values(StrapiDatabaseDriver).includes(config.databaseDriver)) {
       throwConfigInvalidValueError('databaseDriver', config.databaseDriver);
+      return;
+    }
+
+    if (config.databaseDriver === StrapiDatabaseDriver.STRAPI_EXPORT) {
+      if (typeof config.strapiExportOptions?.key !== 'string') {
+        if (!config.strapiExportOptions?.['no-encrypt']) {
+          throw new Error('Strapi Export needs a valid key:string in the strapiExportOptions or no-encrypt set to true');
+        }
+      }
     }
   },
   gcsBucketName: (config) => {
@@ -179,6 +188,9 @@ module.exports = {
     databaseDriver: env('DATABASE_CLIENT'),
     mysqldumpOptions: [],
     pgDumpOptions: [],
+    strapiExportOptions: {
+      'no-encrypt': true,
+    },
     allowCleanup: false,
     timeToKeepBackupsInSeconds: undefined,
     cleanupCronSchedule: undefined,
