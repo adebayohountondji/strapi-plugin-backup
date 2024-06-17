@@ -31,7 +31,8 @@ const requiredConfigKeys = [
   'pgDumpExecutable',
   'sqlite3Executable',
   'storageService',
-  'timeToKeepBackupsInSeconds'
+  'timeToKeepBackupsInSeconds',
+  'cleanupPolicies'
 ];
 
 const configStorageServiceIsAwsS3 = config => config.storageService === StorageService.AWS_S3;
@@ -163,11 +164,25 @@ const customValidatorByRequiredConfigKey = {
     }
   },
   timeToKeepBackupsInSeconds: (config) => {
-    if (config.cleanup !== true)
+    if (config.allowCleanup !== true)
+      return;
+
+    if (typeof config.cleanupPolicies?.days === 'number')
       return;
 
     if (typeof config.timeToKeepBackupsInSeconds !== 'number') {
       throwConfigInvalidValueError('timeToKeepBackupsInSeconds', config.timeToKeepBackupsInSeconds);
+    }
+  },
+  cleanupPolicies: (config) => {
+    if (config.allowCleanup !== true)
+      return;
+
+    if (typeof config.cleanupPolicies?.days !== 'number' && typeof config.timeToKeepBackupsInSeconds === 'number')
+      return;
+
+    if (typeof config.cleanupPolicies?.days !== 'number') {
+      throwConfigInvalidValueError('cleanupPolicies', config.cleanupPolicies);
     }
   }
 }
@@ -181,6 +196,7 @@ module.exports = {
     pgDumpOptions: [],
     allowCleanup: false,
     timeToKeepBackupsInSeconds: undefined,
+    cleanupPolicies: {},
     cleanupCronSchedule: undefined,
     customDatabaseBackupFilename: undefined,
     customUploadsBackupFilename: undefined,

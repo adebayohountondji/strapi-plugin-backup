@@ -33,9 +33,26 @@ const dateDiffInSeconds = (date1, date2) => {
   return Math.abs((date2.getTime() - date1.getTime()) / 1000);
 };
 
+const getBackupsToKeep = (backups, periodInSeconds) => {
+  const uniqueBackups = [];
+  const seenPeriods = new Set();
+
+  backups.forEach(backupFile => {
+    const period = Math.floor(backupFile.date.getTime() / 1000 / periodInSeconds);
+
+    if (!seenPeriods.has(period)) {
+      uniqueBackups.push(backupFile);
+      seenPeriods.add(period);
+    }
+  });
+
+  return uniqueBackups;
+};
+
 module.exports = {
   createArchive,
   createTmpFilename,
   dateDiffInSeconds,
+  getBackupsToKeep,
   tmpDir
 }

@@ -13,7 +13,8 @@ const {
 const {
   createArchive,
   createTmpFilename,
-  dateDiffInSeconds
+  dateDiffInSeconds,
+  getBackupsToKeep
 } = require("../../../internal/utils");
 
 const {
@@ -46,6 +47,43 @@ module.exports = ({ strapi }) => {
         })
         .catch(reject);
     });
+  };
+
+  const applyCleanupPolicies = (backups, policies) => {
+    const now = new Date();
+
+    // set limits
+    const dailyLimit = policies.days ? policies.days * 86400 : policies;
+    const weeklyLimit = policies.weeks * 604800; // Convert to seconds
+    const monthlyLimit = policies.months * 2592000; // Convert to seconds
+  
+    const dailyBackups = [];
+    const weeklyBackups = [];
+    const monthlyBackups = [];
+  
+    backups.forEach(backupFile => {
+      const timeDifferenceInSeconds = (now - backupFile.date) / 1000;
+  
+      if (timeDifferenceInSeconds <= dailyLimit) {
+        dailyBackups.push(backupFile);
+      } else if (weeklyLimit && timeDifferenceInSeconds <= weeklyLimit) {
+        weeklyBackups.push(backupFile);
+      } else if (monthlyLimit && timeDifferenceInSeconds <= monthlyLimit) {
+        monthlyBackups.push(backupFile);
+      }
+    });
+  
+    // Select unique backups for weekly and monthly periods
+    const weeklyBackupsToKeep = getBackupsToKeep(weeklyBackups, 604800);
+    const monthlyBackupsToKeep = getBackupsToKeep(monthlyBackups, 2592000);
+  
+    const backupsToDelete = backups.filter(backupFile =>
+      !dailyBackups.includes(backupFile) &&
+      !weeklyBackupsToKeep.includes(backupFile) &&
+      !monthlyBackupsToKeep.includes(backupFile)
+    );
+  
+    return backupsToDelete;
   };
 
   return {
@@ -81,16 +119,10 @@ module.exports = ({ strapi }) => {
     cleanup: () => {
       return storageService.list()
         .then(backups => {
-          let namesOfFilesToBeDeleted = [];
+          const backupsToDelete = applyCleanupPolicies(backups, backupConfig.cleanupPolicies || backupConfig.timeToKeepBackupsInSeconds);
+          const backupNamesToDelete = backupsToDelete?.flatMap((backup) => backup.name);
 
-          backups.forEach(backupFile => {
-            const archiveDurationInSeconds = dateDiffInSeconds(backupFile.date, new Date());
-            if (archiveDurationInSeconds >= backupConfig.timeToKeepBackupsInSeconds) {
-              namesOfFilesToBeDeleted.push(backupFile.name);
-            }
-          });
-
-          return storageService.delete(namesOfFilesToBeDeleted);
+          return storageService.delete(backupNamesToDelete);
         });
     }
   };

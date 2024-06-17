@@ -349,9 +349,9 @@ module.exports = ({env}) => ({
 });
 ```
 
-### timeToKeepBackupsInSeconds
+### timeToKeepBackupsInSeconds (deprecated)
 
-- Required if `allowCleanup` is `true`
+- deprecated, use cleanupPolicies instead
 - Number
 
 ```js
@@ -362,6 +362,31 @@ module.exports = ({env}) => ({
     enabled: true,
     config: {
       timeToKeepBackupsInSeconds: 172800, // Keeps backups for 2 days
+    }
+  }
+});
+```
+
+
+### cleanupPolicies
+
+- Required if `allowCleanup` is `true`
+- Object
+
+Allows to use backup retention to keep backups for a longer time without need for large storage. First key `days` is required and will keep all the backups made for that time period. `weekly` and `monthly` will keep oldest backup per week/month for set amount of time.
+
+```js
+// ./config/plugins.js
+
+module.exports = ({env}) => ({
+  backup: {
+    enabled: true,
+    config: {
+      cleanupPolicies: {
+        days: 30 // required, keep backups for this amount of days
+        weeks: 12, // optional, keep a backup per week for this amount of weeks
+        months: 12 // optional, keep a backup per month for this amount of months
+      },
     }
   }
 });

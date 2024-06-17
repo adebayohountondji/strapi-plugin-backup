@@ -46,7 +46,11 @@ module.exports = ({env}) => {
           '--dump-date'
         ],
         allowCleanup: true,
-        timeToKeepBackupsInSeconds: 172800, // 2 days
+        cleanupPolicies: {
+        days: 30 // required, keep backups for this amount of days
+        weeks: 12, // optional, keep a backup per week for this amount of weeks
+        months: 12 // optional, keep a backup per month for this amount of months
+      },
         cleanupCronSchedule: '0 9 * * *', // Each day at 09:00 AM
         errorHandler: (error, strapi) => {
           console.log(error);
