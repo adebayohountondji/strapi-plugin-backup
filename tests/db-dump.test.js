@@ -3,7 +3,7 @@ const {
   parseCommandOptionString,
   parseMysqlConnectionString,
   parsePostgresConnectionString
-} = require('../internal/db-dump');
+} = require('../server/src/lib/db-dump');
 
 test('parseCommandOptionString', () => {
   expect(

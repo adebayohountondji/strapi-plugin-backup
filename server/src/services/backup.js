@@ -4,24 +4,24 @@ const fs = require("fs");
 
 const {
   createDatabaseDumperFromConfig
-} = require("../../../internal/db-dump");
+} = require("../lib/db-dump");
 
 const {
   createStorageServiceFromConfig
-} = require("../../../internal/storage");
+} = require("../lib/storage");
 
 const {
   createArchive,
   createTmpFilename,
   dateDiffInSeconds
-} = require("../../../internal/utils");
+} = require("../lib/utils");
 
 const {
   createBackupDatabaseConnectionConfigFromStrapi
 } = require("./utils");
 
 module.exports = ({ strapi }) => {
-  const backupConfig = strapi.config.get('plugin.backup');
+  const backupConfig = strapi.config.get('plugin::backup');
   const storageService = createStorageServiceFromConfig(backupConfig);
 
   const backupFile = (

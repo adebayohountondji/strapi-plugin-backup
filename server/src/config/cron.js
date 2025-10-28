@@ -2,10 +2,10 @@
 
 const {
   createBackupFilenameFromPrefixAndDate
-} = require('../backend/services/utils');
+} = require('../lib/utils');
 
 module.exports = ({strapi}) => {
-  const backupConfig = strapi.config.get('plugin.backup');
+  const backupConfig = strapi.config.get('plugin::backup');
   const backupService = strapi.plugin('backup').service('backup');
   const backupLogService = strapi.plugin('backup').service('log');
 

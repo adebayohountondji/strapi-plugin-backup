@@ -53,14 +53,14 @@
     "tar": ">=3.0.0 <=6"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^4.0.0"
+    "@strapi/strapi": "^5.0.0"
   },
   "scripts": {
     "prepare": "husky install",
     "test": "jest"
   },
   "engines": {
-    "node": ">=14.19.1 <=20.x.x",
+    "node": ">=14.19.1 <=22.x.x",
     "npm": ">=6.0.0"
   }
 }

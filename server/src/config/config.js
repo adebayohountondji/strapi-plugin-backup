@@ -2,11 +2,11 @@
 
 const {
   StrapiDatabaseDriver
-} = require("../../internal/db-dump");
+} = require("../lib/db-dump");
 
 const {
   StorageService
-} = require("../../internal/storage");
+} = require("../lib/storage");
 
 const throwConfigInvalidValueError = (configKey, invalidValue) => {
   throw new Error(

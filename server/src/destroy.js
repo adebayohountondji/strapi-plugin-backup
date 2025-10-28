@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const {
   tmpDir
-} = require('../../internal/utils');
+} = require('./lib/utils');
 
 module.exports = () => ({
   destroy({ strapi }) {
