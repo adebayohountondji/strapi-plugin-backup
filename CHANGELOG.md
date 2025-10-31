@@ -1,6 +1,6 @@
 # Release Notes
 
-## [Unreleased]
+## Unreleased
 
 * Dependencies are being updated and compatibility adjustments are being made
 
