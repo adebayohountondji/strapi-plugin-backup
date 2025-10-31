@@ -90,8 +90,10 @@ module.exports = ({ strapi }) => {
             }
           });
 
-          return storageService.delete(namesOfFilesToBeDeleted);
-        });
+          if (namesOfFilesToBeDeleted.length > 0) {
+            return storageService.delete(namesOfFilesToBeDeleted);
+          }
+        })
     }
   };
 };
