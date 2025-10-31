@@ -4,6 +4,10 @@
 
 * Dependencies are being updated and compatibility adjustments are being made
 
+## [v2.0.1](https://github.com/adebayohountondji/strapi-plugin-backup/compare/v2.0.0...v2.0.1) - 2025-10-31
+
+* The Cleanup used to display errors when no backups were yet eligible for deletion. Now it properly ignores cases with no files to delete, avoiding MalformedXML errors and misleading logs.
+
 ## [v2.0.0](https://github.com/adebayohountondji/strapi-plugin-backup/compare/v1.1.3...v2.0.0) - 2025-10-31
 
 * Migration of the plugin to support **Strapi 5** (previously Strapi 4)

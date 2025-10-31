@@ -1,6 +1,6 @@
 {
   "name": "strapi-plugin-backup",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Automate the backup of uploads and database to the cloud.",
   "keywords": [
     "strapi-plugin",
