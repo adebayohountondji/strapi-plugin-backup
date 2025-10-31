@@ -4,7 +4,7 @@ const cron = require('./config/cron');
 
 const {
   tmpDir
-} = require('./lib/utils');
+} = require('../../internal/utils');
 
 module.exports = async ({ strapi }) => {
   console.log("hello world")
