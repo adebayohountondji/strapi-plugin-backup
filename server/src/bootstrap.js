@@ -7,7 +7,6 @@ const {
 } = require('../../internal/utils');
 
 module.exports = async ({ strapi }) => {
-  console.log("hello world")
   if (!fs.existsSync(tmpDir())) {
     fs.mkdirSync(tmpDir());
   }
