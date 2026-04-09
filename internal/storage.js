@@ -27,7 +27,7 @@ class AbstractStorage {
 class AwsS3 extends AbstractStorage {
   #s3;
   #bucket;
-  #prefix;
+  #suffix;
 
   constructor(
     {
@@ -42,7 +42,7 @@ class AwsS3 extends AbstractStorage {
 
     const parts = bucket.split('/');
     this.#bucket = parts[0]; 
-    this.#prefix = parts.length > 1 ? parts.slice(1).join('/') + '/' : '';
+    this.#suffix = parts.length > 1 ? parts.slice(1).join('/') + '/' : '';
 
     const AWS = require('aws-sdk');
 
@@ -72,7 +72,7 @@ class AwsS3 extends AbstractStorage {
       this.#s3.putObject(
         {
           Bucket: this.#bucket,
-          Key: this.#prefix + filename,
+          Key: this.#suffix + filename,
           Body: content
         },
         function (error) {
@@ -101,7 +101,7 @@ class AwsS3 extends AbstractStorage {
     let backups = [];
     let params = {
       Bucket: this.#bucket,
-      Prefix: this.#prefix,
+      Prefix: this.#suffix,
       MaxKeys: 1000
     };
 
