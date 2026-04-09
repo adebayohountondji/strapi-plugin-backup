@@ -4,6 +4,11 @@
 
 * Dependencies are being updated and compatibility adjustments are being made
 
+## [v2.0.3](https://github.com/adebayohountondji/strapi-plugin-backup/compare/v2.0.1...v2.0.3) - 2026-04-09
+
+* Fix AWS S3 Cleanup: The plugin now correctly supports bucket names containing a path (e.g., `bucket/folder`) by separating the bucket name from the prefix.
+* Fix double folder nesting in S3 when using a custom path in the bucket configuration.
+
 ## [v2.0.1](https://github.com/adebayohountondji/strapi-plugin-backup/compare/v2.0.0...v2.0.1) - 2025-10-31
 
 * The Cleanup used to display errors when no backups were yet eligible for deletion. Now it properly ignores cases with no files to delete, avoiding MalformedXML errors and misleading logs.
